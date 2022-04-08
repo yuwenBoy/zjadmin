@@ -16,6 +16,7 @@ public class User extends SystemBaseEntity {
     private String Password;
 
     private String cname;
+    
 
     private String email;
     @Column(name = "address")
@@ -35,8 +36,8 @@ public class User extends SystemBaseEntity {
     private String Avatar;
 
 
-    @Column(name = "isdisabled")
-    private Integer Isdisabled;
+//    @Column(name = "isdisabled")
+    private Integer isdisabled;
 
     @OneToOne
     @JoinColumn(name = "position_id",referencedColumnName = "id")

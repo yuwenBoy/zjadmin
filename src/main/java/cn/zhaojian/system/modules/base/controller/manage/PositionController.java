@@ -5,20 +5,17 @@ import cn.zhaojian.system.common.utils.PageUtil;
 import cn.zhaojian.system.common.utils.ResultUtil;
 import cn.zhaojian.system.common.vo.PageVo;
 import cn.zhaojian.system.common.vo.Result;
-import cn.zhaojian.system.common.vo.SearchVo;
 import cn.zhaojian.system.config.security.AnonymousGetMapping;
 import cn.zhaojian.system.config.security.AnonymousPostMapping;
 import cn.zhaojian.system.modules.base.entity.Position;
-import cn.zhaojian.system.modules.base.entity.User;
 import cn.zhaojian.system.modules.base.service.PositionService;
-import cn.zhaojian.system.modules.base.service.UserService;
-import cn.zhaojian.system.modules.base.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -67,7 +64,7 @@ public class PositionController {
 
     @AnonymousGetMapping("/getPositionList")
     public Result<Object> getPositionList() {
-        List<Map<String,Object>> map = positionService.getPositionList(SecurityUtils.getCurrentUsername());
+        List<Map<String,Object>> map = positionService.getPositionList();
         return ResultUtil.data(map);
     }
 }

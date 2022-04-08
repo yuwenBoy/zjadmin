@@ -1,10 +1,7 @@
 package cn.zhaojian.system.modules.base.service;
 
 import cn.zhaojian.system.base.SystemBaseService;
-import cn.zhaojian.system.common.vo.SearchVo;
 import cn.zhaojian.system.modules.base.entity.Position;
-import cn.zhaojian.system.modules.base.entity.User;
-import javafx.geometry.Pos;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -36,5 +33,5 @@ public interface PositionService extends SystemBaseService<Position,String> {
     /*
     * 获取职位列表
     * */
-    List<Map<String,Object>> getPositionList(String userName);
+    List<Map<String,Object>> getPositionList();
 }

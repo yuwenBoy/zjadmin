@@ -2,10 +2,6 @@ package cn.zhaojian.system.modules.base.serviceimpl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.zhaojian.system.common.exception.BabException;
-import cn.zhaojian.system.common.exception.EntityExistException;
-import cn.zhaojian.system.common.utils.ValidationUtil;
-import cn.zhaojian.system.common.vo.Result;
-import cn.zhaojian.system.common.vo.SearchVo;
 import cn.zhaojian.system.modules.base.dao.PositionDao;
 import cn.zhaojian.system.modules.base.entity.Department;
 import cn.zhaojian.system.modules.base.entity.Position;
@@ -20,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
-import java.awt.peer.ScrollbarPeer;
 import java.util.*;
 
 @Slf4j
@@ -78,8 +73,8 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public List<Map<String,Object>> getPositionList(String userName) {
-        List<Position> list = positionDao.findByCreateBy(userName);
+    public List<Map<String,Object>> getPositionList() {
+        List<Position> list = positionDao.findAll();
         List<Map<String,Object>> mapList=new ArrayList<>();
         for(Position p:list){
             Map<String,Object> map = new HashMap<String,Object>();

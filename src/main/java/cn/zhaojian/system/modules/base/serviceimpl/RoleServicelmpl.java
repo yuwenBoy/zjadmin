@@ -2,19 +2,15 @@ package cn.zhaojian.system.modules.base.serviceimpl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.zhaojian.system.common.exception.BabException;
-import cn.zhaojian.system.common.utils.StringUtils;
 import cn.zhaojian.system.modules.base.dao.RoleDao;
-import cn.zhaojian.system.modules.base.dao.UserDao;
-import cn.zhaojian.system.modules.base.entity.*;
+import cn.zhaojian.system.modules.base.entity.Module;
+import cn.zhaojian.system.modules.base.entity.Role;
 import cn.zhaojian.system.modules.base.service.ModuleService;
-import cn.zhaojian.system.modules.base.service.RoleModuleService;
 import cn.zhaojian.system.modules.base.service.RoleService;
 import cn.zhaojian.system.modules.base.service.UserRoleService;
 import cn.zhaojian.system.modules.base.vo.UserDto;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -57,10 +53,7 @@ public class RoleServicelmpl implements RoleService {
                 List<Predicate> list = new ArrayList<Predicate>();
 //                //模糊搜素
                 if (StrUtil.isNotBlank(role.getName())) {
-                    list.add(cb.like(nameField, '%' + role.getName() + '%'));
-                }
-                if (StrUtil.isNotBlank(role.getCode())) {
-                    list.add(cb.like(codeField, '%' + role.getCode() + '%'));
+                    list.add(cb.or(cb.like(nameField, '%' + role.getName() + '%'),cb.like(codeField, '%' + role.getName() + '%')));
                 }
                 Predicate[] arr = new Predicate[list.size()];
                 cq.where(list.toArray(arr));

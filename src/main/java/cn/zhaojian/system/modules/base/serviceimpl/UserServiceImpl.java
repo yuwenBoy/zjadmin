@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRoleService userRoleService;
+    
 
     @Override
     public UserDao getRepository() {
@@ -57,11 +58,10 @@ public class UserServiceImpl implements UserService {
             @Override
             public Predicate toPredicate(Root<User> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 
-                Path<String> userNameField = root.get("userName");
                 Path<String> cNameField = root.get("cname");
                 Path<String> emailField = root.get("email");
                 Path<String> phoneField = root.get("phone");
-
+                Path<Integer> isdisabledField = root.get("isdisabled");
                 List<Predicate> list = new ArrayList<Predicate>();
                 Root<Position> bRoot = cq.from(Position.class);
                 Root<Department> cRoot = cq.from(Department.class);
@@ -69,18 +69,15 @@ public class UserServiceImpl implements UserService {
                 list.add(cb.equal(root.get("dept"), cRoot.get("id")));
 
                 //模糊搜素
-                if (StrUtil.isNotBlank(user.getUserName())) {
-                    list.add(cb.like(userNameField, '%' + user.getUserName() + '%'));
-                }
                 if (StrUtil.isNotBlank(user.getCname())) {
-                    list.add(cb.like(cNameField, '%' + user.getCname() + '%'));
+                    list.add(cb.or(cb.like(cNameField, '%' + user.getCname() + '%'),cb.like(phoneField, '%' + user.getCname() + '%'),cb.like(emailField, '%' + user.getCname() + '%')));
                 }
-                if (StrUtil.isNotBlank(user.getEmail())) {
-                    list.add(cb.like(emailField, '%' + user.getEmail() + '%'));
+                if (user.getIsdisabled()!=null) {
+                    list.add(cb.equal(isdisabledField,user.getIsdisabled()));
                 }
-                if (StrUtil.isNotBlank(user.getPhone())) {
-                    list.add(cb.like(phoneField, '%' + user.getPhone() + '%'));
-                }
+//                else{
+//                    list.add(cb.equal(isdisabledField,0));
+//                }
 
                 if (StrUtil.isNotBlank(user.getDepartmentId())) {
                     list.add(cb.equal(cRoot.get("id"), user.getDepartmentId()));
@@ -180,7 +177,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Set<Long> ids) {
         userDao.deleteAllByIdIn(ids);
-        userRoleService.deleteAllByUserIdIn(ids);
     }
 
     /*
