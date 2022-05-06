@@ -52,6 +52,5 @@ public class User extends SystemBaseEntity {
 
     private Date birthday;
     private int sex;
-
 }
 
