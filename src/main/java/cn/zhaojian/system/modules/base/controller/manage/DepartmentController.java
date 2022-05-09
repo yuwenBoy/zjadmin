@@ -4,22 +4,16 @@ import cn.zhaojian.system.common.utils.PageUtil;
 import cn.zhaojian.system.common.utils.ResultUtil;
 import cn.zhaojian.system.common.vo.PageVo;
 import cn.zhaojian.system.common.vo.Result;
-import cn.zhaojian.system.common.vo.SearchVo;
 import cn.zhaojian.system.config.security.AnonymousGetMapping;
 import cn.zhaojian.system.config.security.AnonymousPostMapping;
 import cn.zhaojian.system.modules.base.entity.Department;
-import cn.zhaojian.system.modules.base.entity.Module;
-import cn.zhaojian.system.modules.base.entity.Position;
 import cn.zhaojian.system.modules.base.service.DepartmentService;
-import cn.zhaojian.system.modules.base.service.PositionService;
-import cn.zhaojian.system.modules.base.vo.DeptSmallDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
@@ -40,6 +34,7 @@ public class DepartmentController {
     @AnonymousGetMapping("/getByCondition")
     public Result<Page<Department>> getRoleByPage(Department department, PageVo pageVo) {
         Page<Department> page = departmentService.findByCondition(department, PageUtil.initPage(pageVo));
+    
         return new ResultUtil<Page<Department>>().setData(page);
     }
 

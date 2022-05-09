@@ -2,17 +2,9 @@ package cn.zhaojian.system.modules.base.serviceimpl;
 
 
 import cn.hutool.core.util.StrUtil;
-import cn.zhaojian.system.common.exception.BabException;
-import cn.zhaojian.system.common.vo.SearchVo;
 import cn.zhaojian.system.modules.base.dao.DepartmentDao;
-import cn.zhaojian.system.modules.base.dao.PositionDao;
 import cn.zhaojian.system.modules.base.entity.Department;
-import cn.zhaojian.system.modules.base.entity.Module;
-import cn.zhaojian.system.modules.base.entity.Position;
 import cn.zhaojian.system.modules.base.service.DepartmentService;
-import cn.zhaojian.system.modules.base.service.PositionService;
-import cn.zhaojian.system.modules.base.vo.DeptSmallDto;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -161,10 +153,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         List<Department> departments = departmentDao.findByPidOrderByIdDesc(id);
         for (Department department : departments) {
             Map<String, Object> map = new HashMap<>();
+            List<Department> list = departmentDao.findByPidOrderByIdDesc(department.getId());
             map.put("id", department.getId());
             map.put("label", department.getDepartmentName());
-            map.put("hasChildren", true);
-            map.put("leaf", false);
+            map.put("hasChildren", list.size()>0?true:false);
+            map.put("leaf", list.size()>0?false:true);
             mapList.add(map);
         }
         return mapList;

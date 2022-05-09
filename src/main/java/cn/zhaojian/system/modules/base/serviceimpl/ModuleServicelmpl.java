@@ -1,18 +1,13 @@
 package cn.zhaojian.system.modules.base.serviceimpl;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.zhaojian.system.common.exception.BabException;
-import cn.zhaojian.system.common.vo.Result;
 import cn.zhaojian.system.modules.base.dao.ModuleDao;
 import cn.zhaojian.system.modules.base.entity.Module;
-import cn.zhaojian.system.modules.base.entity.Role;
 import cn.zhaojian.system.modules.base.entity.RoleModule;
-import cn.zhaojian.system.modules.base.entity.UserRole;
 import cn.zhaojian.system.modules.base.service.ModuleService;
 import cn.zhaojian.system.modules.base.service.RoleModuleService;
 import cn.zhaojian.system.modules.base.vo.*;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,7 +19,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -61,7 +55,7 @@ public class ModuleServicelmpl implements ModuleService {
                 tree.setComponent(d.getMenuPath());
                 tree.setName(d.getName());
                 tree.setPath(d.getMenuPath());
-                tree.setHidden(false);
+                tree.setHidden(d.getHidden());
                 meta.setTitle(d.getName());
                 meta.setNoCache(true);
                 meta.setIcon(d.getIcon());
@@ -83,7 +77,7 @@ public class ModuleServicelmpl implements ModuleService {
             if (module != null) {
                 if (module.getParentId() == 0) {
                     moduleDto.setName(module.getName());
-                    moduleDto.setHidden(false);
+                    moduleDto.setHidden(module.getHidden());
                     moduleDto.setComponent("Layout");
                     moduleDto.setPath("/" + module.getMenuPath());
                     moduleDto.setRedirect("noredirect");
@@ -173,8 +167,9 @@ public class ModuleServicelmpl implements ModuleService {
             Map<String, Object> map = new HashMap<>();
             map.put("id", module.getId());
             map.put("label", module.getName());
-            map.put("hasChildren", true);
-            map.put("leaf", false);
+            List<Module> childCount = moduleDao.findByParentId(module.getId());
+            map.put("hasChildren", childCount.size()>0?true:false);
+            map.put("leaf", childCount.size()>0?false:true);
             mapList.add(map);
         }
         return mapList;

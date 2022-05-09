@@ -32,4 +32,6 @@ public interface NewsService extends SystemBaseService<News, String> {
     void delete(Set<Long> ids);
 
     void apply(Long id, int status, Date pubdate);
+
+    News detail(Long id);
 }

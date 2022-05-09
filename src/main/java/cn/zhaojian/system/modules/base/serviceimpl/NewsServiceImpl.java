@@ -85,4 +85,10 @@ public class NewsServiceImpl implements NewsService {
     public void apply(Long id, int status, Date pubdate){
         newsDao.apply(id,status,pubdate);
     }
+
+    @Override
+    public News detail(Long id){
+        News news = newsDao.findById(id);
+        return news;
+    }
 }

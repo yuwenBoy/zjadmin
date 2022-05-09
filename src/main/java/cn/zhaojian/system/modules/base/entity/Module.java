@@ -2,8 +2,6 @@ package cn.zhaojian.system.modules.base.entity;
 
 import cn.zhaojian.system.base.SystemBaseEntity;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +30,8 @@ public class Module extends SystemBaseEntity {
     private String icon;
 
     private String permission;
+
+    private Boolean hidden;
 
     public Boolean setHasChildren(Boolean hasChildren) {
       return  true;

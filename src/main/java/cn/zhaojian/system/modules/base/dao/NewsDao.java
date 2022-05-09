@@ -17,4 +17,6 @@ public interface NewsDao extends SystemBaseDao<News,String> {
     @Modifying
     @Query(value = "update c_news set status= ?2,pubdate = ?3 where id= ?1 ",nativeQuery = true)
     void apply(Long id, int status, Date pubdate);
+
+    News findById(Long id);
 }

@@ -1,10 +1,7 @@
 package cn.zhaojian.system.modules.base.service;
 
 import cn.zhaojian.system.base.SystemBaseService;
-import cn.zhaojian.system.common.vo.SearchVo;
 import cn.zhaojian.system.modules.base.entity.Department;
-import cn.zhaojian.system.modules.base.entity.Module;
-import cn.zhaojian.system.modules.base.vo.DeptSmallDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -36,7 +33,7 @@ public  interface DepartmentService extends SystemBaseService<Department,String>
      * */
     void create(Department module);
 
-    public void delete(Set<Long> ids);
+    void delete(Set<Long> ids);
 
     /*
      * 根据id懒加载方式获取
