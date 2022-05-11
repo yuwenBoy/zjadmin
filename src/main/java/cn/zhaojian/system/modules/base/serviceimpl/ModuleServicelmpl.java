@@ -60,11 +60,14 @@ public class ModuleServicelmpl implements ModuleService {
                 meta.setNoCache(true);
                 meta.setIcon(d.getIcon());
                 tree.setMeta(meta);
+                List<ModuleListDto> children=  moduleToTreeChild(moduleList,d.getId());
+                tree.setChildren(children);
                 trees.add(tree);
             }
         }
         return trees;
     }
+
 
     /*
      * 转化成菜单结果数据
@@ -75,9 +78,10 @@ public class ModuleServicelmpl implements ModuleService {
             ModuleDto moduleDto = new ModuleDto();
             ModuleMeta meta = new ModuleMeta();
             if (module != null) {
+                moduleDto.setName(module.getName());
+                moduleDto.setHidden(module.getHidden());
+
                 if (module.getParentId() == 0) {
-                    moduleDto.setName(module.getName());
-                    moduleDto.setHidden(module.getHidden());
                     moduleDto.setComponent("Layout");
                     moduleDto.setPath("/" + module.getMenuPath());
                     moduleDto.setRedirect("noredirect");
