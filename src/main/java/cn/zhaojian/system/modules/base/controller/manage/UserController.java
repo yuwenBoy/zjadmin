@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServlet;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,6 +35,10 @@ public class UserController {
     private UserService userService;
     @Autowired
     private  PasswordEncoder passwordEncoder;
+
+    public void exportUser(HttpServlet response,User user) throws IOException {
+//        userService.download(userService.queryAll(user),response);
+    }
     /*
      * 分页列表
      * */

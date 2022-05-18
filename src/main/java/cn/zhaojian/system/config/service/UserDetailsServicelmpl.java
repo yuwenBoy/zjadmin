@@ -47,8 +47,8 @@ public class UserDetailsServicelmpl implements UserDetailsService {
             if (userDto == null) {
                 return null;
             } else {
-                if (userDto.getIsdisabled() == 2) {
-                    throw new BabException("账号未激活");
+                if (userDto.getIsdisabled() == 1) {
+                    throw new BabException("账号未激活，请联系管理员开通。");
                 }
                 jwtUserDto = new JwtUserDto(userDto, null, roleService.mapToGrantedAuthorities(userDto));
                 userDtoMap.put(username, jwtUserDto);

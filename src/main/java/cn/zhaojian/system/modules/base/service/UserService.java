@@ -1,11 +1,7 @@
 package cn.zhaojian.system.modules.base.service;
 
 import cn.zhaojian.system.base.SystemBaseService;
-import cn.zhaojian.system.common.vo.SearchVo;
-
-import cn.zhaojian.system.modules.base.entity.Position;
 import cn.zhaojian.system.modules.base.entity.User;
-import cn.zhaojian.system.modules.base.entity.UserRole;
 import cn.zhaojian.system.modules.base.vo.UserDto;
 import cn.zhaojian.system.modules.base.vo.UserRoleDto;
 import org.springframework.cache.annotation.CacheConfig;
@@ -13,6 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,6 +34,14 @@ public interface UserService extends SystemBaseService<User, String> {
      * @return /
      */
     Map<Object, String> uploadAvatar(MultipartFile file);
+
+    /**
+     * 导出数据
+     * @param queryAll 待导出的数据
+     * @param response /
+     * @throws IOException /
+     */
+    void download(List<UserDto> queryAll, HttpServletResponse response) throws IOException;
 
     /**
      * 多条件分页获取用户

@@ -4,13 +4,16 @@ import cn.hutool.core.util.StrUtil;
 import cn.zhaojian.system.common.exception.BabException;
 import cn.zhaojian.system.common.exception.EntityExistException;
 import cn.zhaojian.system.common.utils.FileUtil;
-import cn.zhaojian.system.modules.base.entity.*;
-import cn.zhaojian.system.modules.base.service.UserRoleService;
-import cn.zhaojian.system.modules.base.utils.SecurityUtils;
 import cn.zhaojian.system.common.utils.StringUtils;
 import cn.zhaojian.system.config.service.UserCacheClean;
 import cn.zhaojian.system.modules.base.dao.UserDao;
+import cn.zhaojian.system.modules.base.entity.Department;
+import cn.zhaojian.system.modules.base.entity.Position;
+import cn.zhaojian.system.modules.base.entity.User;
+import cn.zhaojian.system.modules.base.entity.UserRole;
+import cn.zhaojian.system.modules.base.service.UserRoleService;
 import cn.zhaojian.system.modules.base.service.UserService;
+import cn.zhaojian.system.modules.base.utils.SecurityUtils;
 import cn.zhaojian.system.modules.base.vo.UserDto;
 import cn.zhaojian.system.modules.base.vo.UserRoleDto;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +27,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.*;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @Slf4j
@@ -67,7 +72,7 @@ public class UserServiceImpl implements UserService {
                 Root<Department> cRoot = cq.from(Department.class);
                 list.add(cb.equal(root.get("position"), bRoot.get("id")));
                 list.add(cb.equal(root.get("dept"), cRoot.get("id")));
-
+//                list.add(cb.equal(root.get("avatar"),"http://localhost:81/img/avatar/"+user.getAvatar()));
                 //模糊搜素
                 if (StrUtil.isNotBlank(user.getCname())) {
                     list.add(cb.or(cb.like(cNameField, '%' + user.getCname() + '%'),cb.like(phoneField, '%' + user.getCname() + '%'),cb.like(emailField, '%' + user.getCname() + '%')));
@@ -123,7 +128,7 @@ public class UserServiceImpl implements UserService {
         Map<Object, String> map = new HashMap<>();
         User user = userDao.findByUserName(SecurityUtils.getCurrentUsername());
         String oldPath = user.getAvatar();
-        File file = FileUtil.upload(multipartFile, "F:\\my-project\\jxxqz-admin\\zjadmin-web\\zjadmin-web\\src\\assets\\avatar\\");
+        File file = FileUtil.upload(multipartFile, "F:\\Tools\\nginx-1.21.6\\html\\img\\avatar\\");
         user.setAvatar(Objects.requireNonNull(file).getPath());
         userDao.save(user);
         if (StringUtils.isNotBlank(file.getName())) {
@@ -217,5 +222,25 @@ public class UserServiceImpl implements UserService {
             }
             userRoleService.saveOrUpdateAll(userRole);
         }
+    }
+
+    @Override
+    public void download(List<UserDto> queryAll, HttpServletResponse response) throws IOException {
+       List<Map<String, Object>> list = new ArrayList<>();
+//        for (UserDto userDTO : queryAll) {
+//            List<String> roles = userDTO.getRoles().stream().map(RoleSmallDto::getName).collect(Collectors.toList());
+//            Map<String, Object> map = new LinkedHashMap<>();
+//            map.put("用户名", userDTO.getUsername());
+//            map.put("角色", roles);
+//            map.put("部门", userDTO.getDept().getName());
+//            map.put("岗位", userDTO.getJobs().stream().map(JobSmallDto::getName).collect(Collectors.toList()));
+//            map.put("邮箱", userDTO.getEmail());
+//            map.put("状态", userDTO.getEnabled() ? "启用" : "禁用");
+//            map.put("手机号码", userDTO.getPhone());
+//            map.put("修改密码的时间", userDTO.getPwdResetTime());
+//            map.put("创建日期", userDTO.getCreateTime());
+//            list.add(map);
+//        }
+        FileUtil.downloadExcel(list, response);
     }
 }
